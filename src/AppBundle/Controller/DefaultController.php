@@ -49,11 +49,12 @@ class DefaultController extends Controller
 
     protected function sendRequestNotice(SiteRequest $request)
     {
-        $mail = \Swift_Message::newInstance()
+        $mailer = $this->get('mailer');
+        $mail = $mailer->createMessage()
             ->setSubject('Заявка с сайта')
             ->setFrom('noreply@sibinfosystem.ru')
             ->setTo('manager@sibinfosystem.ru')
             ->setBody($this->renderView('AppBundle:default:request_mail.html.twig', array('request' => $request)), 'text/html');
-        $this->get('mailer')->send($mail);
+        $mailer->send($mail);
     }
 } 
