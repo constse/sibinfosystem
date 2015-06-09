@@ -1,1 +1,111 @@
 {% extends 'AppBundle::layout.html.twig' %}
+
+{% block head %}
+    <style>
+        section { margin-top: 100px; }
+        div.request { display: none; margin: 0 auto 20px; width: 600px; }
+        {% if form_error %}div.request { display: block; }{% endif %}
+        #{{ form.comment.vars.id }} { height: 100px; }
+        span.required { color: #d9534f; }
+        .alert { margin: 0 auto; width: 600px; }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <section class="text-center">
+            <h1>Привет!</h1>
+            <p class="lead">
+                Ты попал на сайт агентства IT-решений &laquo;ИнфоСистем&raquo;.<br>
+                Но здесь пока ничего нет, так как наш сайт находится на реконструкции.<br>
+            </p>
+            <p class="lead">
+                Однако, если ты хочешь заказать у нас крутой сайт,<br>
+                то ты можешь
+                <a href="javascript:void(0);" class="request">оставить заявку здесь</a> или
+                <a href="mailto:manager@sibinfosystem.ru" class="email">написать нам письмо</a>.
+            </p>
+        </section>
+        <div class="request">
+            {{ form_start(form) }}
+                {% set errors = form.name.vars.errors %}
+                {% set class = 'form-group' ~ (errors|length > 0 ? ' has-error' : '') %}
+                <div class="{{ class }}">
+                    {{ form_label(form.name) }} <span class="required">*</span>
+                    {{ form_widget(form.name, {'attr': {'class': 'form-control', 'autofocus': true}}) }}
+                    {% if errors|length > 0 %}{% for error in errors %}<span class="help-block">{{ error.message }}</span>{% endfor %}{% endif %}
+                </div>
+                {% set errors = form.phone.vars.errors %}
+                {% set class = 'form-group' ~ (errors|length > 0 ? ' has-error' : '') %}
+                <div class="{{ class }}">
+                    {{ form_label(form.phone) }}
+                    <div class="input-group">
+                        <span class="input-group-addon">+7</span>
+                        {{ form_widget(form.phone, {'attr': {'class': 'form-control', 'maxlength': 10}}) }}
+                    </div>
+                    {% if errors|length > 0 %}{% for error in errors %}<span class="help-block">{{ error.message }}</span>{% endfor %}{% endif %}
+                </div>
+                {% set errors = form.email.vars.errors %}
+                {% set class = 'form-group' ~ (errors|length > 0 ? ' has-error' : '') %}
+                <div class="{{ class }}">
+                    {{ form_label(form.email) }}
+                    {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+                    {% if errors|length > 0 %}{% for error in errors %}<span class="help-block">{{ error.message }}</span>{% endfor %}{% endif %}
+                </div>
+                {% set errors = form.comment.vars.errors %}
+                {% set class = 'form-group' ~ (errors|length > 0 ? ' has-error' : '') %}
+                <div class="{{ class }}">
+                    {{ form_label(form.comment) }}
+                    {{ form_widget(form.comment, {'attr': {'class': 'form-control'}}) }}
+                    {% if errors|length > 0 %}{% for error in errors %}<span class="help-block">{{ error.message }}</span>{% endfor %}{% endif %}
+                </div>
+                {{ form_widget(form.submit, {'attr': {'class': 'btn btn-success'}}) }}
+            {{ form_end(form) }}
+        </div>
+        {% if app.session.flashbag.has('request_success') %}
+            {% for notice in app.session.flashbag.get('request_success') %}
+                <div class="alert alert-success alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Закрыть"><span aria-hidden="true">&times;</span></button>
+                    {{ notice|raw }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+    <script>
+        $(document).ready(function() {
+            $('a.request').click(function() {
+                var form = $('div.request');
+                if (!form.is(':visible')) form.stop(true, true).slideDown(250);
+                else form.stop(true, true).slideUp(250);
+            }).popover({
+                container: 'body',
+                content: '<div><em>Заказать крутой сайт</em></div>',
+                html: true,
+                placement: 'bottom',
+                trigger: 'hover'
+            });
+            $('a.email').popover({
+                container: 'body',
+                content: '<div><em>Менеджер ИнфоСистем</em></div><div><strong>manager@sibinfosystem.ru</strong></div>',
+                html: true,
+                placement: 'bottom',
+                trigger: 'hover'
+            });
+            $('#{{ form.phone.vars.id }}').keydown(function(e) {
+                if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110]) !== -1 || (e.keyCode == 65 && (e.ctrlKey || e.metaKey)) || (e.keyCode >= 35 && e.keyCode <= 40)) return;
+                if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) e.preventDefault();
+            });
+            var error = $('<span class="help-block"></span>');
+            $('form').submit(function(e) {
+                var phone = $('#{{ form.phone.vars.id }}'), email = $('#{{ form.email.vars.id }}');
+                if (!phone.val() && !email.val()) {
+                    phone.parent().addClass('has-error').append(error.clone().html('Пожалуйста, укажи свой номер мобильного телефона...'));
+                    email.parent().addClass('has-error').append(error.clone().html('...или адрес электронной почты.'));
+                    e.preventDefault();
+                    return false;
+                }
+                return true;
+            });
+        });
+    </script>
+{% endblock %}

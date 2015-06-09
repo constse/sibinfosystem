@@ -1,0 +1,10 @@
+<html>
+<body>
+    <h1>Заявка с сайта sibinfosystem.ru</h1>
+    <strong>Имя:</strong> {{ request.name|e }}<br>
+    <strong>Телефон:</strong> {% if request.phone is not empty %}{{ request.phone|e }}{% else %}не указан{% endif %}<br>
+    <strong>E-mail:</strong> {% if request.email is not empty %}{{ request.email|e }}{% else %}не указан{% endif %}<br>
+    <strong>Комментарий:</strong> {% if request.comment is not empty %}{{ request.comment|e }}{% else %}не указан{% endif %}<br>
+    <strong>Время:</strong> {{ request.createdAt|date('d.m.Y H:i:s') }}
+</body>
+</html>
