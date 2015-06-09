@@ -32,13 +32,15 @@ framework:
 twig:
   debug: "%kernel.debug%"
   strict_variables: "%kernel.debug%"
+  globals:
+    locale: "%locale%"
 
 # Assetic Configuration
 assetic:
   debug: "%kernel.debug%"
   use_controller: false
-  bundles: [ ]
-  #java: /usr/bin/java
+  bundles: [AppBundle]
+#  java: /usr/bin/java
   filters:
     cssrewrite: ~
 #    closure:
