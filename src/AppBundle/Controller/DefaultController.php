@@ -15,7 +15,6 @@ class DefaultController extends Controller
         $siteRequest = new SiteRequest();
         $form = $this->createForm(new RequestFormType(), $siteRequest);
         $form->handleRequest($request);
-        $formError = false;
 
         if ($form->isSubmitted() && $form->isValid()) {
             $valid = true;
@@ -43,7 +42,7 @@ class DefaultController extends Controller
 
         return $this->render('AppBundle:default:index.html.twig', array(
             'form' => $form->createView(),
-            'form_error' => $formError
+            'form_error' => $form->isSubmitted() && !$form->isValid()
         ));
     }
 
