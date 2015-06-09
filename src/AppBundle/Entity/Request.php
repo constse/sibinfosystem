@@ -22,6 +22,7 @@ class Request extends AbstractEntity
     /**
      * @var string
      * @ORM\Column(name = "email", type = "string", nullable = true)
+     * @Assert\Email(message = "Адрес электронной почты указан некорректно")
      */
     protected $email;
 
@@ -36,7 +37,7 @@ class Request extends AbstractEntity
     /**
      * @var string
      * @ORM\Column(name = "phone", type = "string", nullable = true)
-     * @Assert\Regex(pattern = "/^\d{10}$/", message = "Некорректно указан номер мобильного телефона", groups = {"request"})
+     * @Assert\Regex(pattern = "/^\d{10}$/", message = "Номер мобильного телефона указан некорректно", groups = {"request"})
      */
     protected $phone;
 
