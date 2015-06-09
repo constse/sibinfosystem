@@ -97,6 +97,7 @@
             });
             var error = $('<span class="help-block"></span>');
             $('form').submit(function(e) {
+                $(this).find('.help-block').remove();
                 var phone = $('#{{ form.phone.vars.id }}'), email = $('#{{ form.email.vars.id }}');
                 if (!phone.val() && !email.val()) {
                     phone.parents('.form-group').addClass('has-error').append(error.clone().html('Пожалуйста, укажи свой номер мобильного телефона...'));
