@@ -8,7 +8,7 @@ class RequestFormType extends AbstractEntityFormType
 {
     public function __construct()
     {
-        parent::__construct('request', 'Request', 'request');
+        parent::__construct('request', 'Request', 'request', 'request');
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)

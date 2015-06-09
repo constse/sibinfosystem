@@ -28,15 +28,15 @@ class Request extends AbstractEntity
     /**
      * @var string
      * @ORM\Column(name = "name", type = "string")
-     * @Assert\NotBlank(message = "Имя не может быть пустым")
-     * @Assert\Length(min = 2, minMessage = "Имя не должно быть меньше 2 символов")
+     * @Assert\NotBlank(message = "Имя не может быть пустым", groups = {"request"})
+     * @Assert\Length(min = 2, minMessage = "Имя не должно быть меньше 2 символов", groups = {"request"})
      */
     protected $name;
 
     /**
      * @var string
      * @ORM\Column(name = "phone", type = "string", nullable = true)
-     * @Assert\Regex(pattern = "/^\d{10}$/", message = "Некорректно указан номер мобильного телефона")
+     * @Assert\Regex(pattern = "/^\d{10}$/", message = "Некорректно указан номер мобильного телефона", groups = {"request"})
      */
     protected $phone;
 
