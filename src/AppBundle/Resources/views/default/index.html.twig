@@ -99,8 +99,8 @@
             $('form').submit(function(e) {
                 var phone = $('#{{ form.phone.vars.id }}'), email = $('#{{ form.email.vars.id }}');
                 if (!phone.val() && !email.val()) {
-                    phone.parent().addClass('has-error').append(error.clone().html('Пожалуйста, укажи свой номер мобильного телефона...'));
-                    email.parent().addClass('has-error').append(error.clone().html('...или адрес электронной почты.'));
+                    phone.parents('.form-group').addClass('has-error').append(error.clone().html('Пожалуйста, укажи свой номер мобильного телефона...'));
+                    email.parents('.form-group').addClass('has-error').append(error.clone().html('...или адрес электронной почты.'));
                     e.preventDefault();
                     return false;
                 }
